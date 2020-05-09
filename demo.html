@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OliverEditTable</title>
+	<!-- 要先引入jQuery -->
+	<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.5.0/jquery.js"></script>
+	<!-- 引入editTable -->
+	<script type="text/javascript" src="oliverEditTable.js"></script>
+	<link rel="stylesheet" type="text/css" href="oliverEditTable.css">
+
+</head>
+<body>
+	<!-- 创建table -->
+	<table id="testTable">
+		<thead>
+	    <tr>
+	        <th width="80" data-editable="true">是否显示操作按钮</th>
+	        <!-- 隐藏该列需要将本列头设置隐藏 -->
+	        <th style="display:none;" data-type="input" data-field="id" data-hidden="true">ID隐藏列</th>
+	        <!-- 输入框 -->
+	        <th data-type="input" data-field="input" >输入框</th>
+	        <!-- 文本 -->
+	        <th data-type="text" data-field="text" >文本</th>
+	        <!-- 自定义渲染 -->
+	        <th data-field="testFormatter" data-formatter="formatter">自定义列</th>
+			<!-- 输入框的禁用 -->
+	        <th data-type="input" data-field="inputReadonly" data-readonly="true">输入框的禁用</th>
+	    </tr>
+	    <tbody></tbody>
+	</table>
+	<button id="getData">获取表格数据</button><br>
+	<button id="getlength">获取表格长度</button><br>
+	<button id="getchange">获取更改数据</button><br>
+	<button id="getclean">清除数据</button><br>
+</body>
+<script type="text/javascript">
+$(function(){
+	// 实例化全局对象
+	window.tableExample = editTable.createExample("testTable");
+	var data = '[{"id":"1","input":"sdjkl","text":"fs","testFormatter":"124214","inputReadonly":"1"}]';
+	addRow("testTable",data);
+})
+/**
+ * [formatter 自定义渲染]
+ * @Author   Oliver
+ * @DateTime 2020-04-24
+ * @version  [version]
+ * @param    {[type]}   value   [description]
+ * @param    {[type]}   el      [description]
+ * @param    {[type]}   rowData [description]
+ * @return   {[type]}           [description]
+ */
+function formatter(value,el,rowData){
+	var renderHtml = "<select id='"+el+"' value='"+value+"'>"
+	renderHtml += "<option value='2'>2</option>"
+	renderHtml += "<option value='3'>3</option>"
+	renderHtml += "</select>";
+	return renderHtml;
+}
+
+$("#getData").on("click",function(){
+	alert(tableExample.getTableData());
+});
+
+$("#getlength").on("click",function(){
+	alert(tableExample.getTableLength());
+})
+
+$("#getchange").on("click",function(){
+	alert(tableExample.getTableChangeData());
+})
+
+$("#getclean").on("click",function(){
+	tableExample.cleanDate();
+	$("#testTable").find("tbody").remove();
+	alert("清除成功");
+})
+/**
+ * [addRow 渲染行]
+ * @Author   Oliver
+ * @DateTime 2020-04-15
+ * @version  [version]
+ * @param    {[type]}   data [description]
+ */
+function addRow(el,data,rowId){
+	var example;
+	if(el == "testTable"){
+		// 样品table
+		example = window.tableExample;
+	}
+	// 打印添加的节点
+	console.log(rowId);
+	if(data!="" && data!=undefined && data!=null){
+		example.addRow(el,JSON.parse(data));
+	}else{
+		var templ = '[]';
+		example.addRow(el,JSON.parse(templ));
+	}
+}
+/**
+ * [delRow 删除行]
+ * @Author   Oliver
+ * @DateTime 2020-04-15
+ * @version  [version]
+ * @param    {[type]}   rowId [description]
+ * @return   {[type]}         [description]
+ */
+function delRow(el,data,rowId){
+	var example;
+	// 区分删除表格
+	if(el == "testTable"){
+		example = window.tableExample;
+	}
+	// 打印删除的数据
+	console.log(data);
+	var length = example.getTableLength();
+	if(length==1){
+		alert("至少要保留一行");
+		return false;
+	}
+	example.delRow(rowId);
+}
+</script>
+</html>

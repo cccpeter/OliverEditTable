@@ -1,0 +1,90 @@
+table {
+	border: 1px solid #ccc;
+	width: 100%;
+	margin:0;
+	padding:0;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table tr {
+	border: 1px solid #ddd;
+	padding: 5px;
+}
+
+table th, table td {
+	border-right: 1px solid #ddd;
+	padding: 2px;
+	text-align: left;
+}
+
+table th {
+	text-transform: uppercase;
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+
+@media screen and (max-width: 600px) {
+
+	table {
+	  	border: 0;
+	}
+
+	table thead {
+	  	display: none;
+	}
+
+	table tr {
+		margin-bottom: 10px;
+		display: block;
+		border-bottom: 2px solid #ddd;
+	}
+
+	table td {
+		display: block;
+		text-align: right;
+		font-size: 13px;
+		border-bottom: 1px dotted #ccc;
+	}
+
+	table td:last-child {
+	  	border-bottom: 0;
+	}
+
+	table td:before {
+	  	content: attr(data-label);
+	  	float: left;
+	  	text-transform: uppercase;
+	  	font-weight: bold;
+	}
+}
+.addRows{
+	font-size: 18px;
+    font-weight: bolder;
+    text-decoration: none;
+    cursor: pointer;
+    color: #1b6094;
+}
+.removeRows{
+	font-size: 18px;
+    font-weight: bolder;
+    text-decoration: none;
+    cursor: pointer;
+    color: #1b6094;
+}
+/*除去表头边框*/
+table th{
+	background: #fafafa;
+    border-left: 1px solid #fafafa;
+    border-top: 1px solid #fafafa;
+	text-align: center;
+    border-right: 1px solid #fafafa;
+}
+table tr td {
+	text-align: center;
+}
+
+/*样品封样表格样式*/
+table{
+    table-layout: fixed;
+}
