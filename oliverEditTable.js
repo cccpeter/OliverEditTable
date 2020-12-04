@@ -40,6 +40,7 @@ var editTable = {
 	editable : "data-editable",
 	// 是否禁用(字符串值默认"false")
 	readonly : "data-readonly",
+	select : "data-select",
 	createExample:function(el){
 		var nowIndex = 0;
 		var nowIndexList = "";
@@ -70,6 +71,28 @@ var editTable = {
 				length = list.length-1;
 			}
 			return length;
+		};
+		example.getSelectData = function(el){
+			var checkTableData = new Array();
+			var elList = $("#"+el+" input[name='btSelectItem']");
+			var checkIdList = new Array();
+			if(elList==undefined || elList==null || elList.length==0 || template==undefined || template==null || template.length==0){
+				return checkTableData;
+			}
+			for(var i=0;i<elList.length;i++){
+				if(elList[i].checked == true){
+					checkIdList.push(elList[i].dataset.index);
+				}
+
+			}
+			for(var i=0;i<checkIdList.length;i++){
+				var map = new Map();
+				for(var key in template){
+					map.set(key,$("#"+key+checkIdList[i]).val());
+				}
+				checkTableData[i] = example.mapToObj(map);
+			}
+			return checkTableData;
 		};
 		example.getTableData = function(){
 			if(template!=null && template!=undefined && template!=""){
@@ -135,6 +158,7 @@ var editTable = {
 			var hiddenRowList = new Array();
 			// editable列的优先级最高
 			var editableList = new Array();
+			var selectList = new Array();
 			for(var i=0; i<rows[0].cells.length; i++){
 				var attr = rows[0].cells[i].attributes;
 				for(var j=0;j<attr.length;j++){
@@ -156,6 +180,9 @@ var editTable = {
 					if(attr[j].name == editTable.readonly){
 						readonlyList.push(attr[j].value);
 					}
+					if(attr[j].name == editTable.select){
+						selectList.push(attr[j].value);
+					}
 				}
 				// save cloumn order
 				if(fieldList.length == i){
@@ -176,6 +203,9 @@ var editTable = {
 				if(readonlyList.length == i){
 					readonlyList.push("");
 				}
+				if(selectList.length == i){
+					selectList.push("");
+				}
 			}
 			for(var row in rowData){
 				render += "<tr id='"+trId+nowIndex+"'>";
@@ -193,6 +223,14 @@ var editTable = {
 				template = templ;
 				templ = JSON.stringify(templ);
 				for(var i=0;i<fieldList.length;i++){
+					// add select
+					// debugger;
+					if(selectList[i] == "check"){
+						// render += "<td style='text-align: center; width: 100px;'><a id='addRows"+nowIndex+"' style='font-size: 18px;font-weight: bolder;' class='addRows'  title='新增一行' style='font-size: 12px; font-weight: bolder;'  onclick=addRow('"+el+"','["+templ+"]','"+trId+nowIndex+"')>+</a> <a class='removeRows' onclick=delRow('"+el+"','["+rowDataList+"]','"+trId+nowIndex+"') title='删除该行'>一</a></td>"
+						render += "<td style='text-align: center; width: 100px;'><input data-index='"+nowIndex+"' name='btSelectItem' type='checkbox'></td>";
+					}else if(selectList[i] == "radio"){
+						render += "<td style='text-align: center; width: 100px;'><input data-index='"+nowIndex+"' name='btSelectItem' type='radio'></td>";
+					}
 					if(editableList[i]=="true"){
 						render += "<td style='text-align: center; width: 100px;'><a id='addRows"+nowIndex+"' style='font-size: 18px;font-weight: bolder;' class='addRows'  title='新增一行' style='font-size: 12px; font-weight: bolder;'  onclick=addRow('"+el+"','["+templ+"]','"+trId+nowIndex+"')>+</a> <a class='removeRows' onclick=delRow('"+el+"','["+rowDataList+"]','"+trId+nowIndex+"') title='删除该行'>一</a></td>"
 					}

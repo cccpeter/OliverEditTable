@@ -3,7 +3,7 @@
 <head>
 	<title>OliverEditTable</title>
 	<!-- 要先引入jQuery -->
-	<script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.5.0/jquery.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
 	<!-- 引入editTable -->
 	<script type="text/javascript" src="oliverEditTable.js"></script>
 	<link rel="stylesheet" type="text/css" href="oliverEditTable.css">
@@ -14,6 +14,7 @@
 	<table id="testTable">
 		<thead>
 	    <tr>
+	        <th width="80" data-select="check">选择</th>
 	        <th width="80" data-editable="true">是否显示操作按钮</th>
 	        <!-- 隐藏该列需要将本列头设置隐藏 -->
 	        <th style="display:none;" data-type="input" data-field="id" data-hidden="true">ID隐藏列</th>
